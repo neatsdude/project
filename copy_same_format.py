@@ -6,7 +6,7 @@ def collect(format):
 # Making Directory as the format name
     os.mkdir((os.curdir) + '/' + foldername)
     file_loc = os.popen('find . -name "*.%s"'%format).readlines()
-    filename = os.popen('ls -R | grep "\.%s"'%format).readlines()
+    filename = os.popen('ls -aR | grep "\.%s"'%format).readlines()
 # Copying all the files found to the directory
     for i in range(0,len(file_loc)):
         shutil.copyfile(file_loc[i].rstrip('\n'), foldername + '/' + filename[i].rstrip('\n'))
