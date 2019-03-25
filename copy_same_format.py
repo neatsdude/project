@@ -1,4 +1,4 @@
-#!/usr/bin/py3
+#!/usr/bin/python3
 # File finder any consolidator
 import os, sys, shutil
 def collect(format):
