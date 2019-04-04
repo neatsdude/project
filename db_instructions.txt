@@ -1,0 +1,29 @@
+@DB_Server 
+	edit /etc/mysql/my.cnf
+	> #bind-address           = 127.0.0.1
+	  bind-address            = 0.0.0.0
+
+	Execute following commands
+	$mysql -u root --host=127.0.0.1 -p
+
+	mysql>use mysql
+
+	mysql>GRANT ALL ON *.* to root@'%' IDENTIFIED BY 'password';
+
+	mysql>FLUSH PRIVILEGES;
+
+	mysql> SELECT host FROM mysql.user WHERE User = 'root';
+
+
+@python / make python file
+	import MySQLdb as mdb
+	db = mdb.connect(host= '<ip of mysql>', user = 'root', passwd = '<password for root>', database = '<db_name>')
+	cursor = db.cursor()
+	querry = "<any mysql querry>"
+	cursor.execute(querry)	#gives no. of lines as output
+	data = cursor.fetchall()	#saves the result of querry tuple format
+	print(data)	#output in tuples format
+	data = list(data)	#converts tuples into lists
+	for i in data:
+		print(i)
+	#prints line by line output
