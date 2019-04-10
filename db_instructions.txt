@@ -13,7 +13,9 @@
 	mysql>FLUSH PRIVILEGES;
 
 	mysql> SELECT host FROM mysql.user WHERE User = 'root';
-	
+
+
+# http://support.moonpoint.com/languages/python/authentication-insecure-password.php
 Enter password:
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MariaDB connection id is 2822
