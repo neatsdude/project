@@ -32,7 +32,7 @@ Query OK, 0 rows affected (0.08 sec)
 MariaDB [(none)]> exit;
 Bye
 
-	> Restart mysql service
+	> Restart mysql service #iff required
 
 @python / make python file
 	import MySQLdb as mdb
