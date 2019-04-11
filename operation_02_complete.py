@@ -70,7 +70,7 @@ def main():
 
 # Writing activation log
 
-            file.write("%s,%s,"%(msisdn[num] , clip_id[num]) + response + '\n')
+            file.write("%s,%s,"%(msisdn[num] , clip_id[num]) + response.text + ','+ response.url + '\n')
 
 # If already activated write in activation log
 
