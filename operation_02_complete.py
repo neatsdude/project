@@ -76,8 +76,9 @@ def main():
 
         else:
             file.write("%s : ACTIVENUMBER\n" % (msisdn[num]))
-
-
+        
+    file.close()
+        
 # Boiler Plate
 
 if __name__ == '__main__':
