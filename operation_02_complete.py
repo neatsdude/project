@@ -51,8 +51,8 @@ def main():
 # URL parameters
 
             params = (
-                        ('MSISDN', '%s'),
-                        ('TONE_ID', '%s'),
+                        ('MSISDN', msisdn[num]),
+                        ('TONE_ID', clip_id[num]),
                         ('REQUEST', 'SELECTION'),
                         ('SUB_TYPE', 'Prepaid'),
                         ('SELECTED_BY', 'CCC'),
@@ -62,7 +62,7 @@ def main():
                         ('SUBSCRIPTION_CLASS', 'DEFAULT'),
                         ('CHARGE_CLASS', 'FREE_CHURN'),
                         ('IN_LOOP', 'TRUE'),
-                    )%(msisdn[num] , clip_id[num])
+                    )
 
 # Getting URL resopnse
 
