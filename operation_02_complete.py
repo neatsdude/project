@@ -36,7 +36,8 @@ def main():
 
 # New directory report where activation logs file is there
 
-    os.mkdir(report)
+    os.mkdir('report')
+    os.chdir('report')
 
 # Creating Log file ACTIVATION_REPORT.txt
 
