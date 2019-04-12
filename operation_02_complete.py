@@ -29,7 +29,7 @@ def main():
 
     subs_act_d = {}
 
-    for i in range(data):
+    for i in range(len(data)):
         subs_id = (data[i][0]).decode("utf-8")
         act_detail = (data[i][11]).decode("utf-8")
         subs_act_d[subs_id] = act_detail
@@ -45,7 +45,7 @@ def main():
 # Getting the msisdn details one by one
 # checking the subsribers activation details
 
-    for num in range(msisdn):
+    for num in range(len(msisdn)):
         if subs_act_d[msisdn[num]] not in 'B' or 'Z' or 'G' or 'A' or 'N' or 'D' or 'P':
 
 # URL parameters
