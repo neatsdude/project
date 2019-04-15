@@ -24,6 +24,8 @@ def main():
     cursor = db.cursor()
     cursor.execute(query)
     data = cursor.fetchall()
+# Close the database connection after the execution of querry
+    db.close()
 
 # Making existing subscribers list in database
 
