@@ -1,0 +1,28 @@
+============ Python Installation on remote server ===========
+
+
+> Download the tar.gz source code from python.org (Stable one)
+https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tgz
+
+> copy it to the server via winscp
+> extract it
+        $tar -xzf <archive>.tar.gz
+> go to that directory
+> Execute following commands
+        $./configure --enable-optimizations --without-ensurepip
+        $make altinstall
+
+
+============ Installing modules ==============================
+
+python setup.py install --prefix=$HOME/.local
+
+> requests
+https://files.pythonhosted.org/packages/0a/00/8cc925deac3a87046a4148d7846b571cf433515872b5430de4cd9dea83cb/requests-2.7.0.tar.gz
+
+> mysql.connector / MySQLdb
+
+https://files.pythonhosted.org/packages/28/04/e40098f3730e75bbe36a338926f566ea803550a34fb50535499f4fc4787a/mysql-connector-2.2.9.tar.gz
+
+For more info:
+https://docs.python.org/3/install/
