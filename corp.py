@@ -3,7 +3,7 @@ import os
 
 def call_function(arg):
     fn_switch = {'0': status, '1': deactivate, '2': activate, '3': pre_rbt_disable}
-    func = fn_switch.get(arg, lambda: "Invalid Choice")
+    func = fn_switch.get(arg, lambda: "\n\n INVALID CHOICE!!!!\n\n")
     print(func())
 
 
