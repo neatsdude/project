@@ -25,6 +25,7 @@ def get_msisdn(lines):
 lines = file_read(sys.argv[1])
 msisdn = get_msisdn(lines)
 delay = [i for i in msisdn if rq.get(url, params = (('MSISDN', i),('REQUEST','STATUS'))).text == 'ACTIVE']
+clip_id = ['rbt_'+ i[4] + '_rbt' for i in lines[1:]]
 
 def status():
     for i in msisdn:
@@ -44,10 +45,9 @@ def call_function(arg):
 
 
 def check_db():
-    db_sub = os.popen('''mysql -uroot -ponmobile rbt -e "select subscriber_id, subscription_yes, start_date, subscription_class from rbt_subscriber where subscriber_id in %s order by subscription_class ;" ''' %str(tuple(msisdn))).readlines()
-
-    query = ''' select subscriber_id, subscriber_wav_file, sel_status, set_time from rbt_subscriber_selections where subscriber_id in %s and sel_status='B' order by subscriber_wav_file; ''' % str(tuple(msisdn))
-#    print(query + '\n')
+    db_sub = os.popen('''mysql -uroot -ponmobile rbt -e "select subscriber_id, subscription_yes, start_date, subscription_class from rbt_subscriber where subscriber_id in %s order by subscription_class ;" ''' %str(msisdn).replace('[','(').replace(']',')')).readlines()
+    query = ''' select subscriber_id, subscriber_wav_file, sel_status, set_time from rbt_subscriber_selections where subscriber_id in %s and sel_status='B' order by subscriber_wav_file; ''' % str(msisdn).replace('[','(').replace(']',')')
+#    print(query + '\n' + query_2)
     db_sel = os.popen('''mysql -uroot -ponmobile rbt -e " %s " ''' %query ).readlines()
     print('\nSubscribers Table\n')
     for i in db_sub:
@@ -107,7 +107,7 @@ def activate():
 
 
 def deactivate():
-    os.popen('''mysql -uroot -ponmobile rbt -e "delete from rbt_subscriber_downloads where subscriber_id in %s and download_status='y' ;" ''' %str(tuple(msisdn))
+    os.popen('''mysql -uroot -ponmobile rbt -e "delete from rbt_subscriber_downloads where subscriber_id in %s and download_status='y' and promo_id in %s' ;" ''' %(str(msisdn).replace('[','(').replace(']',')') , str(clip_id).replace('[','(').replace(']',')')))
     for i in delay:
         params = (
              ('MSISDN', i),
