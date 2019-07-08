@@ -105,7 +105,7 @@ def activate():
         act_response = rq.get(url, params = params)
         print(i[1] + ' : ' + act_response.text)
 
-
+#In deactivation part added one more query to change the sel_status to 0 and then deactivate.
 def deactivate():
     os.popen('''mysql -uroot -ponmobile rbt -e "delete from rbt_subscriber_downloads where subscriber_id in %s and download_status='y' and promo_id in %s' ;" ''' %(str(msisdn).replace('[','(').replace(']',')') , str(clip_id).replace('[','(').replace(']',')')))
     for i in delay:
