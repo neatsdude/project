@@ -1,0 +1,25 @@
+---
+- name: install tomcat, and deploy sample application
+  hosts: web
+  become: true
+  become_user: root
+  gather_facts: true
+  tasks:
+    - name: "Installing Java"
+      package:
+       name: default-jre
+       state: present
+       update_cache: yes
+       cache_valid_time: 36000
+    - name: "Copying tomcat souce code"
+      copy: src=apache-tomcat-7.0.96.tar.gz dest=/home/vagrant/tomcat7.tar.gz owner=root group=root mode=0644
+    - name: "Extracting"
+      shell: "cd /home/vagrant/ && tar -xzf tomcat7.tar.gz"
+    - name: "Moving the tomcat directory"
+      shell: "mv /home/vagrant/apache-tomcat-7.0.96 /opt/tomcat7/"
+    - name: "Copying the sample application war file"
+      copy: src=sample.war dest=/home/vagrant/sample.war owner=root group=root mode=0644
+    - name: 'Copying war file to desired location'
+      shell: "cp /home/vagrant/sample.war /opt/tomcat7/webapps/"
+    - name: 'Starting the application'
+      shell: "/opt/tomcat7/bin/startup.sh"
