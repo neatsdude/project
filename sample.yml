@@ -1,0 +1,24 @@
+# variables
+# key: value:w
+#Scalar representation
+x: 25
+key with space: 25
+my_string: "in quotes"
+my string: without quotes
+my_float: 25.0
+my_boolean: true
+
+# Sequential representation
+item: 
+- name
+- type
+- price: 100
+
+
+# Map data representation
+biodata:
+ name: Nitesh
+ occupation: Sr. Engineer
+ companies worked:
+ - VVMVP: worked
+ - OnMobile

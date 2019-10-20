@@ -1,0 +1,12 @@
+---
+# Play 01
+- hosts: all
+  tasks:
+  - copy: src=/home/nitesh/sample.txt dest=/tmp/
+  - command: touch /tmp/new_dir
+
+
+# Play 02
+- hosts: app_servers
+  tasks:
+  copy: src=/home/nitesh/sample.txt dest=/tmp/

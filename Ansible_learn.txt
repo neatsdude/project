@@ -1,0 +1,13 @@
+Ansible Playbooks:
+
+> Used to send commands to remote server(s).
+> Consist of 3 Terms:
+ > Task
+	# Single command
+	$ yum install vim -y
+ > Play
+	# Multiple Tasks / commands
+	$ mkdir -p /home/nitesh/empty
+	$ touch /home/nitesh/empty/file
+ > playbook
+	# Multiple Plays
