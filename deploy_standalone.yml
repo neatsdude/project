@@ -1,0 +1,21 @@
+---
+- name: install tomcat, and deploy sample application
+  hosts: mweb
+  become: true
+  become_user: root
+  gather_facts: true
+  tasks:
+    - name: Copying tomcat code
+      copy: src=test_mweb.zip dest=/root/dl owner=root group=root mode=0644
+
+    - name: Extract archive
+      command: chdir=/root/dl /bin/unzip test_mweb.zip
+
+    - name: Moving the tomcat directory
+      command: chdir=/root/dl /bin/mv test /opt/
+
+    - name: Install Tomcat init script
+      copy: src=tomcat_initscript.sh dest=/etc/init.d/test mode=0755
+
+    - name: Start Tomcat
+      service: name=test state=started enabled=yes
