@@ -1,0 +1,19 @@
+---
+- name:  tomcat, and deploy sample application
+  hosts: web
+  become: true
+  become_user: root
+  gather_facts: true
+  vars:
+    - tomcat_location: /opt/tomcat7
+  tasks:
+    - name: "Backing up the existing Tomcat"
+      shell: 'export new_dir="`date | cut -d" " -f4`_`date | cut -d" " -f2`_`date | cut -d" " -f7`" && mkdir -p /var/backup/$new_dir && cp -r {{ tomcat_location }}/lib {{ tomcat_location }}/webapps/sample* /var/backup/$new_dir'
+    - name: "Killing the tomcat"
+      shell: 'export process_id="`ps -ef | grep {{ tomcat_location }} | grep -v grep | cut -d " " -f7`" && kill -9 $process_id'
+    - name: "Copying libs"
+      copy: src=apache-tomcat-7.0.96/lib dest={{ tomcat_location}}/lib owner=root group=root mode=0644
+    - name: "Copying the new application war file"
+      copy: src=sample.war dest={{ tomcat_location }}/webapps/sample.war owner=root group=root mode=0644
+    - name: 'Starting the Tomcat'
+      shell: 'nohup {{ tomcat_location }}/bin/startup.sh'
