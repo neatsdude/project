@@ -1,5 +1,5 @@
 ---
-- name:  tomcat, and deploy sample application
+- name:  tomcat Backup, Copying new Lib, war file and deploy it
   hosts: web
   become: true
   become_user: root
