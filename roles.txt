@@ -1,0 +1,118 @@
+---------- Tags -------------
+
+> Tagging the tasks based on tasks name
+
+ task:
+ - name: Some task
+   <module name>: 
+   tags: <specific tag name as task name>
+
+ - name: Example
+   service: name=HMA state=started
+   tags:
+   - starthma
+
+# You can give sam tag name to two different tasks.
+# It is called grouping the tags
+
+# Single tag Execution
+$ ansible-playbook <playbook> --tags "starthma"
+
+# Executing the multiple tags
+ansible-playbook <playbook> --tags "tag1,tag2"
+
+tags:
+- always
+# This task will always execute even if you skip it
+
+
+
+
+------- Roles --------
+
+> Initialising the Roles
+
+ansible-galaxy init <role_name> --offline
+
+$ ansible-galaxy init release --offline
+
+Which creates the Tree structure like this:
+
+release
+├── defaults
+│   └── main.yml
+├── files
+├── handlers
+│   └── main.yml
+├── meta
+│   └── main.yml
+├── README.md
+├── tasks
+│   └── main.yml
+├── templates
+├── tests
+│   ├── inventory
+│   └── test.yml
+└── vars
+    └── main.yml
+
+
+> Directory structure meaning
+
+defaults - Default variables for the role (see Variables for
+more information).
+
+files - Contains files which can be deployed via this role.
+
+handlers - Contains handlers, which may be used by this
+role or even anywhere outside this role.
+
+meta - Defines some meta data for this role. See below
+for more details
+
+tasks - Contains the main list of tasks to be executed by
+the role.
+
+templates - Contains templates which can be deployed
+via this role.
+
+tests - If you need any additional verification for your build.
+
+vars - Other variables for the role (see Variables for more
+information).
+
+
+
+
+
+
+
+
+
+
+
+--------- Vault --------------
+
+
+ansible-vault create <yaml file>
+
+ansible-vault encrypt <playbook/ hosts/>
+# Asks to create the password
+# REMEMBER THE PASSWORD 
+
+ansible-playbook <playbook> --ask-vault-pass
+# Enter the created password to run the Playbook
+
+ansible-vault edit <file>
+# Edit the encrypted file= playbook/hosts file
+
+ansible-vault view <file>
+
+ansible-vault rekey <file>
+# Changes the password
+
+ansible-vault encrypt_string <any_text=password>
+
+# Paste the content in Playbook in vars: 
+
+ansible-vault decrypt <file>
