@@ -1,0 +1,87 @@
+---
+- name:  Performing Release upgrade >> tomcat Backup, DB backup and Application backup >> Copying new jar, xml, properties & war file and deploy it
+  hosts: rbt_guinea
+  become: true
+  become_user: root
+  gather_facts: true
+  vars:
+    - tomcat_location: /opt/RBT_WEBSERVICE_TOMCAT/apache-tomcat-7.0.42/
+    - deployment_location: /var/backup/deployment
+  tasks:
+    - name: Creating the Deployment Directory
+      shell: 'mkdir -p {{ deployment_location }}/release && mkdir -p {{ deployment_location }}/backup'
+
+    - name: Copying the release to server
+      copy: src=upgrade dest={{ deployment_location }}/release owner=root group=root mode=0777
+
+    - name: "Backing up the existing Tomcat"
+      shell: 'cp -r {{ tomcat_location }}/lib {{ tomcat_location }}/webapps {{ deployment_location }}/backup'
+
+    - name: Backing up the rbt_parameters table
+      shell: 'mysqldump -uroot -ponmobile rbt rbt_parameters > {{ deployment_location }}/backup/rbt_parameters.sql'
+
+    - name: Backing up the rbt_text table
+      shell: 'mysqldump -uroot -ponmobile rbt rbt_text > {{ deployment_location }}/backup/rbt_text.sql'
+
+    - name: Backing up the viral_blacklist table
+      shell: 'mysqldump -uroot -ponmobile rbt rbt_viral_blacklist_table > {{ deployment_location }}/backup/rbt_viral_blacklist_table.sql'
+    
+    - name: "Backing up Ozone RBTDaemon and RBTGatherer"
+      shell: 'cp -r /opt/ozone/bin/jlib/{{ item }} {{ deployment_location }}/backup/'
+      with_items:
+        - RBTDaemon
+        - RBTGatherer
+
+    - name: "Getting Process ID of Tomcat"
+      shell: "ps -ef | grep /opt/RBT_WEBSERVICE_TOMCAT/apache-tomcat-7.0.42/ | grep -v grep | awk '{print $2}'"
+      register: running_processes
+
+    - name: "Killing the Tomcat"
+      shell: kill -9 {{ items}}
+      with_items: {{  running_processes.stdout }}
+
+    - wait_for:
+        path: "/proc/{{ item }}/status"
+        state: absent
+      with_items: "{{ running_processes.stdout }}"
+
+    - name: Execute the Database queries
+      shell: 'mysql -u root -ponmobile rbt < {{ deployment_location }}/release/upgrade/queries.txt'
+
+    - name: "Killing the O3 Processes"
+      shell: 'pkill -9 O3'
+
+    - name: "Stopping the Daemons"
+      service:
+        name: HMA
+        state: stopped
+      pause:
+        prompt: 'Please wait for Daemon to Stop properly: Press return to continue.'
+
+    - name: "Copying jars and config to tomcat"
+      shell: '/bin/cp -r {{ deployment_location }}/release/upgrade/{{ item }}/* {{ tomcat_location }}/lib'
+      with_items:
+        - common_jars
+        - dependency
+        
+    - name: "Copying jars and config to Daemon"
+      shell: '/bin/cp -r {{ deployment_location }}/release/upgrade/{{ item[0] }}/* /opt/ozone/bin/jlib/{{ item[1] }}'
+       with_nested:
+        - ['common_jars' , 'dependency']
+        - ['RBTDaemon' , 'RBTGatherer']
+
+    - name: "Copying the new application war file"
+      shell: 'rm -rf {{ tomcat_location }}/webapps/rbt && /bin/cp {{ deployment_location }}/release/upgrade/rbt_war/rbt.war {{ tomcat_location }}/webapps/'
+
+    - name: 'Starting the Daemon'
+      service:
+        name: HMA
+        state: started
+
+    - name: "Waiting to Daemon to come up"
+      pause:
+        prompt: 'Please wait for Daemon to come up: Press return to continue.'
+
+    - name: 'Starting the Tomcat'
+      shell: 'nohup {{ tomcat_location }}/bin/startup.sh'
+...
