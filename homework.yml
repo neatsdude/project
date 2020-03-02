@@ -1,0 +1,15 @@
+---
+- name: Finds and deletes the Empty directory
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  become: yes
+  vars:
+  - pwd: /home/itsneats/ansible
+  tasks:
+  - name: Follow this command
+    command:
+        cmd: find . -type d -exec rmdir {} +
+        chdir: '{{ pwd }}'
+    ignore_errors: yes
+...
