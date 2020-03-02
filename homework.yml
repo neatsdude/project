@@ -5,7 +5,7 @@
   gather_facts: no
   become: yes
   vars:
-  - pwd: /home/itsneats/ansible
+  - pwd: <Directory in which you want to find & delete empty directories>
   tasks:
   - name: Follow this command
     command:
