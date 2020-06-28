@@ -26,6 +26,7 @@ description:
    - Can run any SELECT, INSERT, UPDATE or DELETE query
    - returns results based on query
    - And returns affected_rows
+   - Also can run SHOW query
    
    See: https://github.com/ansible/ansible-modules-extras/issues/980
 version_added: "1.9"
